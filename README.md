@@ -1,12 +1,5 @@
 # Getting Started
 
-**IMPORTANT: Do not send pull requests to this repository. This is a template repository and is not used for grading. Any pull requests will be closed and ignored.**
-
-## Introduction
-
-If you are reading this, you are probably have received this project as a coding challenge. Please read the instructions
-carefully and follow the steps below to get started.
-
 ## Setup
 
 ### Pre-requisities
@@ -14,7 +7,6 @@ carefully and follow the steps below to get started.
 To run the application you would require:
 
 - [Java](https://www.azul.com/downloads/#zulu)
-- [Temporal](https://docs.temporal.io/cli#install)
 - [Docker](https://docs.docker.com/get-docker/)
 - [Stripe API Keys](https://stripe.com/docs/keys)
 
@@ -26,14 +18,6 @@ use [SDKMAN](https://sdkman.io/).
 ```sh
 brew install --cask zulu21
 ```
-
-You can install Temporal using Homebrew
-
-```sh
-brew install temporal
-```
-
-or visit [Temporal Installation](https://docs.temporal.io/cli#install) for more information.
 
 You can install Docker using Homebrew
 
@@ -58,21 +42,16 @@ stripe.api-key=sk_test_51J3j
 
 ## Run
 
-You are required to first start the temporal server using the following command
+Run the application using the following command.
 
 ```sh
-temporal server start-dev
-```
-
-and then run the application using the following command or using your IDE.
-
-```sh
-./gradlew bootRun
+make start
 ```
 
 ### Other commands
 
 #### Lint
+
 To run lint checks, use the following command
 
 ```sh
@@ -80,11 +59,20 @@ To run lint checks, use the following command
 ```
 
 #### Code Formatting
+
 To format the code, use the following command
 
 ```sh
 ./gradlew spotlessApply
 ```
+
+#### Run Tests
+
+- To run the tests use the following command
+
+  ```sh
+  ./gradlew test
+  ```
 
 ## Guides
 
@@ -101,6 +89,20 @@ The following guides illustrate how to use some features concretely:
 This project contains a Docker Compose file named `compose.yaml`.
 In this file, the following services have been defined:
 
-- postgres: [`postgres:latest`](https://hub.docker.com/_/postgres)
+- cockroach: [`cockroachdb/cockroach`](https://hub.docker.com/u/cockroachdb)
+- temporal-admin-tools: [`temporalio/admin-tools:1.23.0`](https://hub.docker.com/r/temporalio/admin-tools)
+- temporal-ui: [`temporalio/ui:2.22.3`](https://hub.docker.com/r/temporalio/ui)
+- temporal-ui: [`temporalio/ui:2.22.3`](https://hub.docker.com/r/temporalio/ui)
+- midas: [`postgres:latest`](https://hub.docker.com/_/postgres)
 
-Please review the tags of the used images and set them to the same as you're running in production.
+In order to run the app using `docker-compose` navigate to the root of the project and use the following command:
+
+```bash
+docker-compose up
+```
+
+or:
+
+```bash
+make start
+```

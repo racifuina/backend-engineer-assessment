@@ -28,7 +28,7 @@ services:
       - POSTGRES_PWD=
       - POSTGRES_SEEDS=postgres
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
-    image: temporalio/auto-setup:${TEMPORAL_VERSION}
+    image: temporalio/auto-setup:1.23.0
     links:
       - cockroach:postgres
     networks:
@@ -46,7 +46,7 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CLI_ADDRESS=temporal:7233
-    image: temporalio/admin-tools:${TEMPORAL_VERSION}
+    image: temporalio/admin-tools:1.23.0
     networks:
       - temporal-network
     stdin_open: true
@@ -58,21 +58,21 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CORS_ORIGINS=http://localhost:3000
-    image: temporalio/ui:${TEMPORAL_UI_VERSION}
+    image: temporalio/ui:2.22.3
     networks:
       - temporal-network
     ports:
       - 8090:8080
   postgres:
-    image: 'postgres:latest'
+    image: "postgres:latest"
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - "POSTGRES_DB=mydatabase"
+      - "POSTGRES_PASSWORD=secret"
+      - "POSTGRES_USER=myuser"
     networks:
       - temporal-network
     ports:
-      - '5432:5432'
+      - "5432:5432"
     depends_on:
       - temporal
   midas:
@@ -83,7 +83,7 @@ services:
     networks:
       - temporal-network
     ports:
-      - '8080:8080'
+      - "8080:8080"
     depends_on:
       - postgres
       - temporal
