@@ -36,7 +36,7 @@ public class CreateAccountWorkflowImpl implements CreateAccountWorkflow {
     logger.info("createAccount started ");
     details = activity.createPaymentAccount(details);
     logger.info("created payment account");
-    activity.saveAccount(details);
+    details = activity.saveAccount(details);
     logger.info("saved account details");
     return details;
   }
