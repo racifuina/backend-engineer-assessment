@@ -129,3 +129,5 @@ We plan to use the Stripe API as a payment account provider. The application wil
 ### Testing Plan
 Unit tests were written for core functionality methods.
 
+## Implementation Video
+https://youtu.be/5mMv2bS8O-M
