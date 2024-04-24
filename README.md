@@ -1,4 +1,4 @@
-# Getting Started
+# Midas API
 
 ## Setup
 
@@ -68,11 +68,11 @@ To format the code, use the following command
 
 #### Run Tests
 
-- To run the tests use the following command
+To run the tests use the following command
 
-  ```sh
-  ./gradlew test
-  ```
+```sh
+./gradlew test
+```
 
 ## Guides
 
@@ -106,3 +106,26 @@ or:
 ```bash
 make start
 ```
+
+## Implementation Approach
+
+### Problem Understanding
+The Midas API is designed to handle payment Account processing. The main challenge is to securely process account creation/updates and handle potential errors.
+
+### Solution Design
+We plan to use the Stripe API as a payment account provider. The application will send account details to the Stripe API, handle the response, and update our database accordingly.
+
+### Implementation Steps
+1. Set up the Java environment and Docker.
+2. Integrate the Stripe API.
+3. Implement the payment account processing workflows.
+4. Handle Stripe API responses and update the database.
+
+### Tools and Technologies
+- Java for the application logic.
+- Docker for creating a contained and consistent development environment.
+- Stripe API for payment account processing.
+
+### Testing Plan
+Unit tests were written for core functionality methods.
+
