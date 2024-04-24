@@ -1,12 +1,14 @@
 package com.midas.app.mappers;
 
 import com.midas.app.models.Account;
+import com.midas.app.providers.payment.CreateAccount;
 import com.midas.generated.model.AccountDto;
 import lombok.NonNull;
 
 public class Mapper {
   // Prevent instantiation
-  private Mapper() {}
+  private Mapper() {
+  }
 
   /**
    * toAccountDto maps an account to an account dto.
@@ -22,9 +24,19 @@ public class Mapper {
         .firstName(account.getFirstName())
         .lastName(account.getLastName())
         .email(account.getEmail())
+        .providerId(account.getProviderId())
+        .providerType(AccountDto.ProviderTypeEnum.STRIPE)
         .createdAt(account.getCreatedAt())
         .updatedAt(account.getUpdatedAt());
 
     return accountDto;
+  }
+
+  public static CreateAccount toCreateAccount(@NonNull Account account) {
+    return CreateAccount.builder()
+        .firstName(account.getFirstName())
+        .lastName(account.getLastName())
+        .email(account.getEmail())
+        .build();
   }
 }

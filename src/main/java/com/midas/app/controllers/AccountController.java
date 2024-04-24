@@ -1,11 +1,13 @@
 package com.midas.app.controllers;
 
+import com.midas.app.exceptions.ApiException;
 import com.midas.app.mappers.Mapper;
 import com.midas.app.models.Account;
 import com.midas.app.services.AccountService;
 import com.midas.generated.api.AccountsApi;
 import com.midas.generated.model.AccountDto;
 import com.midas.generated.model.CreateAccountDto;
+import com.stripe.exception.StripeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,7 +23,8 @@ public class AccountController implements AccountsApi {
   private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
   /**
-   * POST /accounts : Create a new user account Creates a new user account with the given details
+   * POST /accounts : Create a new user account Creates a new user account with
+   * the given details
    * and attaches a supported payment provider such as &#39;stripe&#39;.
    *
    * @param createAccountDto User account details (required)
@@ -30,16 +33,19 @@ public class AccountController implements AccountsApi {
   @Override
   public ResponseEntity<AccountDto> createUserAccount(CreateAccountDto createAccountDto) {
     logger.info("Creating account for user with email: {}", createAccountDto.getEmail());
+    try {
+      Account account = accountService.createAccount(
+          Account.builder()
+              .firstName(createAccountDto.getFirstName())
+              .lastName(createAccountDto.getLastName())
+              .email(createAccountDto.getEmail())
+              .build());
 
-    var account =
-        accountService.createAccount(
-            Account.builder()
-                .firstName(createAccountDto.getFirstName())
-                .lastName(createAccountDto.getLastName())
-                .email(createAccountDto.getEmail())
-                .build());
+      return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
 
-    return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
+    } catch (StripeException e) {
+      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
   }
 
   /**
