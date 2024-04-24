@@ -18,6 +18,7 @@ components:
           description: "Email of user"
           example: "john@doe.com"
           required: true
+    
     account:
       type: object
       properties:
@@ -72,3 +73,19 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/account"
+
+    patchAccountRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: "Account holder first name"
+          example: "Rigoberto"
+        lastName:
+          type: string
+          description: "Account holder last name"
+          example: "Acifuina"
+        email:
+          type: string
+          description: "Account holder email address"
+          example: "test@test.com"

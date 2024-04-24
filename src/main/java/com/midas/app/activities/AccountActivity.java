@@ -4,6 +4,7 @@ import com.midas.app.models.Account;
 import com.stripe.exception.StripeException;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
+import java.util.UUID;
 
 @ActivityInterface
 public interface AccountActivity {
@@ -16,6 +17,9 @@ public interface AccountActivity {
   @ActivityMethod
   Account saveAccount(Account account);
 
+  @ActivityMethod
+  Account patchAccount(UUID accountId, Account account);
+
   /**
    * createPaymentAccount creates a payment account in the system or provider.
    *
@@ -24,4 +28,7 @@ public interface AccountActivity {
    */
   @ActivityMethod
   Account createPaymentAccount(Account account) throws StripeException;
+
+  @ActivityMethod
+  Account patchPaymentAccount(Account account) throws StripeException;
 }

@@ -15,17 +15,19 @@ import org.slf4j.Logger;
 @WorkflowImpl(taskQueues = "create-account-workflow")
 public class CreateAccountWorkflowImpl implements CreateAccountWorkflow {
   private final Logger logger = Workflow.getLogger(CreateAccountWorkflowImpl.class);
-  private final RetryOptions retryoptions = RetryOptions.newBuilder()
-      .setInitialInterval(Duration.ofSeconds(1))
-      .setMaximumInterval(Duration.ofSeconds(100))
-      .setBackoffCoefficient(2)
-      .setMaximumAttempts(1)
-      .build();
+  private final RetryOptions retryoptions =
+      RetryOptions.newBuilder()
+          .setInitialInterval(Duration.ofSeconds(1))
+          .setMaximumInterval(Duration.ofSeconds(100))
+          .setBackoffCoefficient(2)
+          .setMaximumAttempts(1)
+          .build();
 
-  private final ActivityOptions options = ActivityOptions.newBuilder()
-      .setStartToCloseTimeout(Duration.ofSeconds(30))
-      .setRetryOptions(retryoptions)
-      .build();
+  private final ActivityOptions options =
+      ActivityOptions.newBuilder()
+          .setStartToCloseTimeout(Duration.ofSeconds(30))
+          .setRetryOptions(retryoptions)
+          .build();
 
   private final AccountActivity activity = Workflow.newActivityStub(AccountActivity.class, options);
 

@@ -1,8 +1,10 @@
 package com.midas.app.services;
 
 import com.midas.app.models.Account;
+import com.midas.generated.model.PatchAccountRequestDto;
 import com.stripe.exception.StripeException;
 import java.util.List;
+import java.util.UUID;
 
 public interface AccountService {
   /**
@@ -19,4 +21,11 @@ public interface AccountService {
    * @return List<Account>
    */
   List<Account> getAccounts();
+
+  /**
+   * patchAccount set new values for firstName, lastName and email.
+   *
+   * @return Account
+   */
+  Account patchAccount(UUID id, PatchAccountRequestDto dto) throws StripeException;
 }

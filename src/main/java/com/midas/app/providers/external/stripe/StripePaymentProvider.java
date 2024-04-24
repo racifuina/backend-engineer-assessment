@@ -7,6 +7,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.CustomerUpdateParams;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,5 +52,17 @@ public class StripePaymentProvider implements PaymentProvider {
         .lastName(details.getLastName())
         .email(details.getEmail())
         .build();
+  }
+
+  @Override
+  public Account patchAccount(Account details) throws StripeException {
+    CustomerUpdateParams customerUpdateParams =
+        CustomerUpdateParams.builder()
+            .setName(details.getFirstName() + " " + details.getLastName())
+            .setEmail(details.getEmail())
+            .build();
+    Customer customer = Customer.retrieve(details.getProviderId());
+    customer.update(customerUpdateParams);
+    return details;
   }
 }

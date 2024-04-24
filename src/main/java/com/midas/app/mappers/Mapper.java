@@ -3,12 +3,12 @@ package com.midas.app.mappers;
 import com.midas.app.models.Account;
 import com.midas.app.providers.payment.CreateAccount;
 import com.midas.generated.model.AccountDto;
+import com.midas.generated.model.PatchAccountRequestDto;
 import lombok.NonNull;
 
 public class Mapper {
   // Prevent instantiation
-  private Mapper() {
-  }
+  private Mapper() {}
 
   /**
    * toAccountDto maps an account to an account dto.
@@ -38,5 +38,29 @@ public class Mapper {
         .lastName(account.getLastName())
         .email(account.getEmail())
         .build();
+  }
+
+  public static void patchAccount(Account targetAccount, Account modifiedAccount) {
+    if (modifiedAccount.getFirstName() != null) {
+      targetAccount.setFirstName(modifiedAccount.getFirstName());
+    }
+    if (modifiedAccount.getLastName() != null) {
+      targetAccount.setLastName(modifiedAccount.getLastName());
+    }
+    if (modifiedAccount.getEmail() != null) {
+      targetAccount.setEmail(modifiedAccount.getEmail());
+    }
+  }
+
+  public static void patchAccountFromDto(Account targetAccount, PatchAccountRequestDto dto) {
+    if (dto.getFirstName() != null) {
+      targetAccount.setFirstName(dto.getFirstName());
+    }
+    if (dto.getLastName() != null) {
+      targetAccount.setLastName(dto.getLastName());
+    }
+    if (dto.getEmail() != null) {
+      targetAccount.setEmail(dto.getEmail());
+    }
   }
 }

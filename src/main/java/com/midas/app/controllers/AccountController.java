@@ -7,8 +7,11 @@ import com.midas.app.services.AccountService;
 import com.midas.generated.api.AccountsApi;
 import com.midas.generated.model.AccountDto;
 import com.midas.generated.model.CreateAccountDto;
+import com.midas.generated.model.PatchAccountRequestDto;
 import com.stripe.exception.StripeException;
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +26,7 @@ public class AccountController implements AccountsApi {
   private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
   /**
-   * POST /accounts : Create a new user account Creates a new user account with
-   * the given details
+   * POST /accounts : Create a new user account Creates a new user account with the given details
    * and attaches a supported payment provider such as &#39;stripe&#39;.
    *
    * @param createAccountDto User account details (required)
@@ -34,13 +36,15 @@ public class AccountController implements AccountsApi {
   public ResponseEntity<AccountDto> createUserAccount(CreateAccountDto createAccountDto) {
     logger.info("Creating account for user with email: {}", createAccountDto.getEmail());
     try {
-      Account account = accountService.createAccount(
-          Account.builder()
-              .firstName(createAccountDto.getFirstName())
-              .lastName(createAccountDto.getLastName())
-              .email(createAccountDto.getEmail())
-              .build());
+      Account account =
+          accountService.createAccount(
+              Account.builder()
+                  .firstName(createAccountDto.getFirstName())
+                  .lastName(createAccountDto.getLastName())
+                  .email(createAccountDto.getEmail())
+                  .build());
 
+      logger.info("Created account id: {}", account.getId());
       return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
 
     } catch (StripeException e) {
@@ -61,5 +65,23 @@ public class AccountController implements AccountsApi {
     var accountsDto = accounts.stream().map(Mapper::toAccountDto).toList();
 
     return new ResponseEntity<>(accountsDto, HttpStatus.OK);
+  }
+
+  /**
+   * PATCH /accounts : Update firstName, lastName and email of an Account.
+   *
+   * @return Account (status code 200)
+   */
+  @Override
+  public ResponseEntity<AccountDto> patchAccount(
+      UUID accountId, @Valid PatchAccountRequestDto patchAccountRequestDto) {
+    logger.info("PATCH account: {}", accountId);
+
+    try {
+      Account account = accountService.patchAccount(accountId, patchAccountRequestDto);
+      return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.OK);
+    } catch (StripeException e) {
+      throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
   }
 }

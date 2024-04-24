@@ -14,4 +14,13 @@ public interface PaymentProvider {
    * @return Account
    */
   Account createAccount(CreateAccount details) throws StripeException;
+
+  /**
+   * patchAccount updates an payment account. @Param accountId is the id of account needs to be
+   * updated
+   *
+   * @param details is the details of the account to be created.
+   * @return Account
+   */
+  Account patchAccount(Account details) throws StripeException;
 }
